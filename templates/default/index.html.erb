@@ -1,0 +1,26 @@
+<html>
+	<body>
+		<h1>Welcome to a <%=  node["apache"]["company"] %> Demo!</h1>
+		<h2>This is the <%=  @site_name %> web site.</h2>
+		<p><img alt="<%=  @site_name %>" src="<%= node["apache"]["sites"][@site_name]["image_url"] %>" title="<%=  @site_name %>"></p>
+		<p>Other sites on this server:
+			<ul>
+				<% node["apache"]["sites"].each do |other_site_name, other_site_data| -%>
+					<% if "#{other_site_name}" != @site_name -%>
+						<li><a href="http://<%= "#{other_site_data['lb_url']}" %>">
+							<%= "#{other_site_name}" -%>
+						</a></li>
+					<% end -%>
+				<% end -%>
+			</ul>
+		</p>
+		<p>This page is being served from <%= node["fqdn"]%></p>
+		<p>The IP address of this server is <%= node["ipaddress"] %>:<%= node["apache"]["sites"][@site_name]["port"] %></P>
+		<% if node["location"] %>
+		<p>This machine is located in <%= node["location"]["region"] %>, <%= node["location"]["country"] %> and with cordinates <%= node["location"]["loc"] %></p>
+		<p> Belongs to Organization <%= node["location"]["org"] %></p>
+		<% end %>
+		<p>This server has <%= node['memory']['total'].to_i / 1024 %>MB memory.</p>
+		<p>This version is 0.4.0 of the cookbook!</p>
+	</body>
+</html>

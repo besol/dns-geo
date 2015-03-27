@@ -1,0 +1,20 @@
+<% if @port.to_i != 80 -%>
+  Listen <%= @port.to_i %>
+<% end -%>
+ 
+<VirtualHost *:<%= @port.to_i %>>
+  ServerAlias <%= @alias %> <%= node["fqdn"]%> 
+  ServerAdmin webmaster@localhost
+ 
+  DocumentRoot <%= @document_root %>
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+  <Directory <%= @document_root %>>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+</VirtualHost>
